@@ -12,11 +12,15 @@ namespace eSupervisor_Beta
                       "~/Scripts/jquery.min.js",
                       "~/Scripts/bootstrap.min.js", 
                       "~/Scripts/metisMenu.min.js",
-                      "~/Scripts/sb-admin-2.js"));
+                      "~/Scripts/jquery.dataTables.min.js",
+                      "~/Scripts/dataTables.bootstrap.min.js",
+                      "~/Scripts/sb-admin-2.js")); 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
                       "~/Content/metisMenu.min.css",
+                      "~/Content/dataTables.bootstrap.css",
+                      "~/Content/dataTables.responsive.css",
                       "~/Content/sb-admin-2.css",
                       "~/Content/font-awesome.css"));
         }
