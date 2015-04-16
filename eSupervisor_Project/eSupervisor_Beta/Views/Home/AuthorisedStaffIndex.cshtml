@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "eSupervisor - Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Authorised Staff Index Page</h2>
+<h2>Report:</h2>
+<h4>@Html.ActionLink("Number of Messages Statistics","NumbOfMess", "Report")</h4>
+<h4>@Html.ActionLink("Average Number of Messages for each Supervisor Statistics", "AverageMess", "Report")</h4>
+<h4>@Html.ActionLink("Students without Supervisor", "StudentWithoutSupervisor", "Report")</h4>
+<h4>@Html.ActionLink("Students with no Interaction", "StudentWithNoInteraction", "Report")</h4>
+<h2>Allocation:</h2>
+<h4>@Html.ActionLink("Allocate Students", "selectSupervisor", "Allocation", new { allocate = true},null)</h4>
+<h4>@Html.ActionLink("Re-allocate Students", "selectSupervisor", "Allocation", new { allocate = false},null)</h4>
+<h4>@Html.ActionLink("View Allocation", "viewAllocation", "Allocation")</h4>
+

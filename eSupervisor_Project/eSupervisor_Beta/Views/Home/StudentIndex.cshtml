@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "eSupervisor - Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Student Index Page</h2>
+
+<h4>
+    @{
+    eSupervisor_Beta.Models.eSupervisorEntities db = new eSupervisor_Beta.Models.eSupervisorEntities();
+    int stID = (int)Session["userid"];
+    var querrySt = from st in db.users
+                   from alc in db.allocations
+                   where alc.studentID == st.id && st.id == stID
+                   select st;
+    if (querrySt.ToList().Count != 0)
+    {
+        @Html.ActionLink("View Message", "StudentMessage", "Message")
+    }
+    else
+    {
+       <h3>Messaging is not available because you don't have a supervisor or second marker!</h3>
+    }
+}
+</h4>

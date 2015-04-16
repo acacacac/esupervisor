@@ -1,0 +1,66 @@
+﻿@model IEnumerable<eSupervisor_Beta.MyClasses.StudentWithNoInteraction>
+@{
+    ViewBag.Title = "StudentWithNoInteraction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Report: Student with No Interaction for 7+ days</h2>
+<table>
+    <tr>
+        <td>Student ID</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>No interaction for</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item.hibernateDays > 7 && item.hibernateDays < 28)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.student.id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.student.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.student.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hibernateDays) days
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<h2>Report: Student with No Interaction for 28+ days</h2>
+<table>
+    <tr>
+        <td>Student ID</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>No interaction for</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        if (item.hibernateDays > 28)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.student.id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.student.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.student.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hibernateDays) days
+                </td>
+            </tr>
+        }
+    }
+</table>
+

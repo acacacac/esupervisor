@@ -1,0 +1,64 @@
+﻿@model IEnumerable<eSupervisor_Beta.Models.user>
+
+@{
+    ViewBag.Title = "selectSecondMarker";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>select Second Marker</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+     <input type="radio" name="secondMarkerID" value="-1" checked="checked" style="display:none"/>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.firstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.lastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dob)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dob)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    <input type="radio" name="secondMarkerID" value="@item.id" />
+                </td>
+            </tr>
+        }
+    </table>
+    <h2 style="color:red" id="errorFoo">@ViewBag.NoSecondMarkerSelected</h2>
+    <input type="submit" value="Next" class="btn btn-default" />
+}
+@section Scripts{
+    <script>
+        $("form").submit(function (e) {
+            var secondMarkerID = $('input[name=secondMarkerID]:checked').val();
+            if (secondMarkerID == -1) {
+                e.preventDefault();
+                $("#errorFoo").html("Please select a second marker");
+            }
+        });
+    </script>
+}

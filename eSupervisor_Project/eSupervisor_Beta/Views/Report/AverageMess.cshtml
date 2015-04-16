@@ -1,0 +1,32 @@
+﻿@model IEnumerable<eSupervisor_Beta.MyClasses.SupervisorAndAverageNumbOfMess>
+@{
+    ViewBag.Title = "AverageMess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Report: Average Number of Messages for each Supervisor</h2>
+<table>
+    <tr>
+        <td>Supervisor ID</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Average number of messages</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.supervisor.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.supervisor.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.supervisor.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.averageNumbOfMess)/day
+            </td>
+        </tr>
+    }
+</table>
