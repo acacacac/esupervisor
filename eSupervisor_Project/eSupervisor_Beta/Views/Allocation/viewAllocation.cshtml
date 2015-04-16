@@ -6,64 +6,64 @@
 }
 
 <h2>View Allocation</h2>
-
-<table class="table table-striped table-bordered table-hover" id="dataTables-example">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayName("Student First Name")
-            </th>
-            <th>
-                @Html.DisplayName("Student Last Name")
-            </th>
-            <th>
-                @Html.DisplayName("Supervisor First Name")
-            </th>
-            <th>
-                @Html.DisplayName("Supervisor Last Name")
-            </th>
-            <th>
-                @Html.DisplayName("Second Marker First Name")
-            </th>
-            <th>
-                @Html.DisplayName("Second Marker Last Name")
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover" id="dataTables">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.student.firstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.student.lastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.supervisor.firstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.supervisor.lastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.secondMarker.firstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.secondMarker.lastName)
-                </td>
+                <th>
+                    @Html.DisplayName("Student First Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Student Last Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Supervisor First Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Supervisor Last Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Second Marker First Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Second Marker Last Name")
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
-
-@section scripts
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.student.firstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.student.lastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.supervisor.firstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.supervisor.lastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.secondMarker.firstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.secondMarker.lastName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+    @section scripts
 {
-<script>
-    $(document).ready(function () {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-    });
-</script>
-}
+        <script>
+            $(document).ready(function () {
+                $('#dataTables').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
+    }
