@@ -10,70 +10,79 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <input type="checkbox" name="cbListStudentID" checked="checked" value="-1" style="display:none"/>
-    <input type="text" name="listStudentID" value="-2" style="display:none"/>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.firstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.lastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dob)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.email)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
+    <input type="checkbox" name="cbListStudentID" checked="checked" value="-1" style="display:none" />
+    <input type="text" name="listStudentID" value="-2" style="display:none" />
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="dataTables">
+            <thead>
+                <tr>
+                    <th>
+                        Student ID
+                    </th>
+                    <th>
+                        First name
+                    </th>
+                    <th>
+                        Last name
+                    </th>
+                    <th>
+                        DOB
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>Select</th>
+                </tr>
+                </thead>
+            <tbody>
+                @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.firstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.lastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dob)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.email)
-                </td>
-                <td>
-                    <input type="checkbox" name="cbListStudentID" value="@item.id" />
-                </td>
-            </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.firstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.lastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.dob)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.email)
+                        </td>
+                        <td>
+                            <input type="checkbox" name="cbListStudentID" value="@item.id" />
+                        </td>
+                    </tr>
+        }
+            </tbody>
+        </table>
+        </div>
+        <h2 style="color:red" id="errorFoo">@ViewBag.NoStudentSelected</h2>
+        <input type="submit" value="Allocate" class="btn btn-default" />
         }
 
-    </table>
-     <h2 style="color:red" id="errorFoo">@ViewBag.NoStudentSelected</h2>
-     <input type="submit" value="Allocate" class="btn btn-default" />
-}
+        @section Scripts{
+            <script>
+                $("form").submit(function (e) {
+                    var listStudentID = [];
+                    $('input:checked').each(function () {
+                        listStudentID.push($(this).attr('value'));
+                    });
+                    $('input:text').val(listStudentID.join(','));
+                    if (listStudentID.length == 1 && listStudentID[0] == "-1") {
+                        e.preventDefault();
+                        $("#errorFoo").html("Please select at least one student");
+                    }
+                });
 
-@section Scripts{
-   <script>
-    $("form").submit(function (e) {
-        var listStudentID = [];
-        $('input:checked').each(function () {
-            listStudentID.push($(this).attr('value'));
-        });
-        $('input:text').val(listStudentID.join(','));
-        if (listStudentID.length == 1 && listStudentID[0] == "-1") {
-            e.preventDefault();
-            $("#errorFoo").html("Please select at least one student");
+                $(document).ready(function () {
+                    $('#dataTables').DataTable({
+                        responsive: true
+                    });
+                });
+            </script>
         }
-    });
-</script>
-
-}
