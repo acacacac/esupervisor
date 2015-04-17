@@ -35,16 +35,13 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
+                    <ul class="dropdown-menu dropdown-messages">
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                            <a href="#"><i class="fa fa-user fa-fw"></i>Hello, James Cameron</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <a href="/Home/Logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -58,20 +55,33 @@
                         <li>
                             <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
-                        <li class="active">
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                        <li>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i>Report<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a class="active" href="#">Second Level Item</a>
+                                    @Html.ActionLink("Number of Messages Statistics", "NumbOfMess", "Report")
                                 </li>
                                 <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    <!-- /.nav-third-level -->
+                                    @Html.ActionLink("Average Number of Messages for each Supervisor Statistics", "AverageMess", "Report")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Students without Supervisor", "StudentWithoutSupervisor", "Report")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Students with no Interaction", "StudentWithNoInteraction", "Report")
+                                </li>
+                            </ul>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>Allocation<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    @Html.ActionLink("Allocate Students", "selectSupervisor", "Allocation", new { allocate = true }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Re-allocate Students", "selectSupervisor", "Allocation", new { allocate = false }, null)
+                                </li>
+                                <li>
+                                    @Html.ActionLink("View Allocation", "viewAllocation", "Allocation")
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -87,7 +97,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">@RenderBody()</h1>
+                        @RenderBody()
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -99,6 +109,6 @@
     </div>
     <!-- /#wrapper -->        
     @Scripts.Render("~/bundles/sb-admin-2")
-    @RenderSection("scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
