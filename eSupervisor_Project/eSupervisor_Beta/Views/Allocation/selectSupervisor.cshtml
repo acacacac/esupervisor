@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>selectSupervisor</h2>
+<h2>Select Supervisor</h2>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <input type="radio" name="supervisorID" value="-1" checked="checked" style="display:none" />
