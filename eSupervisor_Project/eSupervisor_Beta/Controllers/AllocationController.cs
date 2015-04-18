@@ -74,7 +74,7 @@ namespace eSupervisor_Beta.Controllers
         public ActionResult selectSecondMarker()
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                if (authorization.allowAccess(1, (int)Session["userid"]) && Session["supervisorID"] != null)
+                if (authorization.allowAccess(1, (int)Session["userid"]) && !string.IsNullOrEmpty(Session["supervisorID"] as string))
                 {
                     int selectedsupervisorID = (int)Session["supervisorID"];
                     var querrySec = from sec in db.users
@@ -91,7 +91,7 @@ namespace eSupervisor_Beta.Controllers
         public ActionResult selectSecondMarker(int secondMarkerID)
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                if (authorization.allowAccess(1, (int)Session["userid"]))
+                if (authorization.allowAccess(1, (int)Session["userid"]) && !string.IsNullOrEmpty(Session["supervisorID"] as string))
                 {
                     if (secondMarkerID == -1)
                     {
@@ -113,7 +113,7 @@ namespace eSupervisor_Beta.Controllers
         public ActionResult alloCate()
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                if (authorization.allowAccess(1, (int)Session["userid"]) && Session["supervisorID"] != null && Session["secondMarkerID"] != null)
+                if (authorization.allowAccess(1, (int)Session["userid"]) && !string.IsNullOrEmpty(Session["supervisorID"] as string) && !string.IsNullOrEmpty(Session["secondMarkerID"] as string))
                 {
                     ViewBag.SupervisorName = db.users.Find((int)Session["supervisorID"]).firstName + " " +
                                              db.users.Find((int)Session["supervisorID"]).lastName;
@@ -164,9 +164,6 @@ namespace eSupervisor_Beta.Controllers
                     allocation allocation;
                     if (listStudentIDint.Count == 1)
                     {
-                        if (listStudentIDint.ElementAt(0) == -1)
-                        {
-                            ViewBag.NoStudentSelected = "Please select at least one student";
                             ViewBag.SupervisorName = db.users.Find((int)Session["supervisorID"]).firstName + " " +
                                                  db.users.Find((int)Session["supervisorID"]).lastName;
 
@@ -177,25 +174,11 @@ namespace eSupervisor_Beta.Controllers
                                                 from alc in db.allocations
                                                 where st.roleID == 3 && alc.studentID != st.id //Student with no allocation
                                                 select st;
-
-                            return View(querryStudent.ToList());
-                        }
-                        if (listStudentIDint.ElementAt(0) == -2)
-                        {
-                            ViewBag.NoStudentSelected = "Please turn on javascript to procceed!";
-                            ViewBag.SupervisorName = db.users.Find((int)Session["supervisorID"]).firstName + " " +
-                                                 db.users.Find((int)Session["supervisorID"]).lastName;
-
-                            ViewBag.SecondMarkerName = db.users.Find((int)Session["secondMarkerID"]).firstName + " " +
-                                                     db.users.Find((int)Session["secondMarkerID"]).lastName;
-
-                            var querryStudent = from st in db.users
-                                                from alc in db.allocations
-                                                where st.roleID == 3 && alc.studentID != st.id //Student with no allocation
-                                                select st;
-
-                            return View(querryStudent.ToList());
-                        }
+                            if (listStudentIDint.ElementAt(0) == -2)
+                                ViewBag.NoStudentSelected = "Please turn on javascript to proceed!";
+                            else
+                                ViewBag.NoStudentSelected = "Please select at least one student!";
+                            return View(querryStudent.ToList());                            
                     }
                     listStudentIDint.RemoveAt(0);
                     foreach (int studentID in listStudentIDint)

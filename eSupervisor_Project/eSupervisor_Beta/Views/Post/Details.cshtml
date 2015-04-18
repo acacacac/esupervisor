@@ -1,0 +1,58 @@
+﻿@model eSupervisor_Beta.Models.post
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>post</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.C_content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.C_content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.postTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.postTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user.firstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user.firstName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -22,7 +22,7 @@ namespace eSupervisor_Beta.Models
             this.comments = new HashSet<comment>();
             this.interactions = new HashSet<interaction>();
             this.meetings = new HashSet<meeting>();
-            this.meetings1 = new HashSet<meeting>();
+            this.meetingArrangements = new HashSet<meetingArrangement>();
             this.messages = new HashSet<message>();
             this.messages1 = new HashSet<message>();
             this.posts = new HashSet<post>();
@@ -43,7 +43,7 @@ namespace eSupervisor_Beta.Models
         public virtual ICollection<comment> comments { get; set; }
         public virtual ICollection<interaction> interactions { get; set; }
         public virtual ICollection<meeting> meetings { get; set; }
-        public virtual ICollection<meeting> meetings1 { get; set; }
+        public virtual ICollection<meetingArrangement> meetingArrangements { get; set; }
         public virtual ICollection<message> messages { get; set; }
         public virtual ICollection<message> messages1 { get; set; }
         public virtual ICollection<post> posts { get; set; }

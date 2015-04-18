@@ -1,0 +1,56 @@
+﻿@model IEnumerable<eSupervisor_Beta.MyClasses.StudentViewMeeting>
+@{
+    ViewBag.Title = "studentViewMeeting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>studentViewMeeting</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Date")
+        </th>
+        <th>
+            @Html.DisplayName("Supervisor")
+        </th>
+        <th>
+            @Html.DisplayName("Detail")
+        </th>
+        <th>
+            @Html.DisplayName("Meeting Type")
+        </th>
+        <th>
+            @Html.DisplayName("Number of Students Involved")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.meeting.time)
+            </td>
+            <td>
+                @Html.DisplayName(item.supervisor.firstName + " " + item.supervisor.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.meeting.detail)
+            </td>
+            <td>
+                @if (item.meeting.type == true)
+                {
+                    @Html.DisplayName("Virtual")
+                }
+                else
+                {
+                    @Html.DisplayName("Real")
+                }
+            </td>
+            <td>
+                @Html.DisplayName(item.numberOfStudent.ToString())
+            </td>
+        </tr>
+    }
+
+</table>

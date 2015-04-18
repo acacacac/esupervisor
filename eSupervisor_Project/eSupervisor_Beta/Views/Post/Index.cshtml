@@ -1,0 +1,54 @@
+﻿@model IEnumerable<eSupervisor_Beta.Models.post>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>View Blog</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C_content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.postTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updateTime)
+        </th>
+        <th>
+            @Html.DisplayName("Author Name")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.Raw(item.C_content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.postTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updateTime)
+        </td>
+        <td>
+            @Html.DisplayName(item.user.firstName + " " + item.user.lastName)
+        </td>
+        @if (item.authorID == Convert.ToInt16(Session["userid"].ToString())) { 
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+        </td>
+        }
+    </tr>
+}
+
+</table>

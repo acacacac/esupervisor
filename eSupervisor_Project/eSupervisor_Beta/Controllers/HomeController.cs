@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using eSupervisor_Beta.Models;
 using eSupervisor_Beta.MyClasses;
 using eSupervisor_Beta.Hubs;
+using System.Net.Mail;
 
 namespace eSupervisor_Beta.Controllers
 {
@@ -21,9 +22,9 @@ namespace eSupervisor_Beta.Controllers
                 user u = db.users.Find((int)Session["userid"]);
                 switch (u.roleID)
                 {
-                    case 1: { return RedirectToAction("AuthorisedStaffIndex"); break; }
-                    case 2: { return RedirectToAction("TeacherIndex"); break; }
-                    default: { return RedirectToAction("StudentIndex"); break; }
+                    case 1: { return RedirectToAction("AuthorisedStaffIndex");}
+                    case 2: { return RedirectToAction("TeacherIndex");}
+                    default: { return RedirectToAction("StudentIndex");}
                 }
             }
             return RedirectToAction("Login");
@@ -67,9 +68,9 @@ namespace eSupervisor_Beta.Controllers
             if (authorization.validateRememberedUser() || Session["userid"] != null)
                 switch (redirectCode())
                 {
-                    case 1: { return RedirectToAction("AuthorisedStaffIndex"); break; }
-                    case 2: { return RedirectToAction("TeacherIndex"); break; }
-                    case 3: { return View("StudentIndex"); break; }
+                    case 1: { return RedirectToAction("AuthorisedStaffIndex"); }
+                    case 2: { return RedirectToAction("TeacherIndex");}
+                    case 3: { return View("StudentIndex");}
                     default: { return RedirectToAction("NotAuthorised"); }
                 }
             return View();
@@ -82,9 +83,9 @@ namespace eSupervisor_Beta.Controllers
             if (authorization.validateUser(user))
                 switch (redirectCode())
                 {
-                    case 1: { return RedirectToAction("AuthorisedStaffIndex"); break; }
-                    case 2: { return RedirectToAction("TeacherIndex"); break; }
-                    case 3: { return RedirectToAction("StudentIndex"); break; }
+                    case 1: { return RedirectToAction("AuthorisedStaffIndex");}
+                    case 2: { return RedirectToAction("TeacherIndex");}
+                    case 3: { return RedirectToAction("StudentIndex");}
                     default: { return RedirectToAction("NotAuthorised"); }
                 }
             ViewBag.res = "Wrong user name or password!";
@@ -122,6 +123,23 @@ namespace eSupervisor_Beta.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void sendMail()
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+            mail.From = new MailAddress("your_email_address@gmail.com");
+            mail.To.Add("kid3pzaj@gmail.com");
+            mail.Subject = "Test Mail";
+            mail.Body = "This is for testing SMTP mail from GMAIL";
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("kid3pzaj102@gmail.com", "goodlucktoyou");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
         }
     }
 }

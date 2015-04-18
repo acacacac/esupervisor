@@ -54,11 +54,19 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="studentID" Type="int" />
-          <Property Name="teacherID" Type="int" />
           <Property Name="time" Type="datetime" />
           <Property Name="type" Type="bit" />
           <Property Name="detail" Type="nvarchar" MaxLength="200" />
+          <Property Name="createDate" Type="datetime" />
+          <Property Name="supervisorID" Type="int" />
+        </EntityType>
+        <EntityType Name="meetingArrangement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="meetingID" Type="int" />
+          <Property Name="studentID" Type="int" />
         </EntityType>
         <EntityType Name="message">
           <Key>
@@ -229,7 +237,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_meeting_user_student">
+        <Association Name="FK_meeting_user">
           <End Role="user" Type="Self.user" Multiplicity="0..1" />
           <End Role="meeting" Type="Self.meeting" Multiplicity="*" />
           <ReferentialConstraint>
@@ -237,19 +245,31 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="meeting">
-              <PropertyRef Name="studentID" />
+              <PropertyRef Name="supervisorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_meeting_user_teacher">
+        <Association Name="FK_meetingArrangement_meeting">
+          <End Role="meeting" Type="Self.meeting" Multiplicity="0..1" />
+          <End Role="meetingArrangement" Type="Self.meetingArrangement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="meeting">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="meetingArrangement">
+              <PropertyRef Name="meetingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_meetingArrangement_user">
           <End Role="user" Type="Self.user" Multiplicity="0..1" />
-          <End Role="meeting" Type="Self.meeting" Multiplicity="*" />
+          <End Role="meetingArrangement" Type="Self.meetingArrangement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="meeting">
-              <PropertyRef Name="teacherID" />
+            <Dependent Role="meetingArrangement">
+              <PropertyRef Name="studentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -308,6 +328,7 @@
           <EntitySet Name="interaction" EntityType="Self.interaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="interactionType" EntityType="Self.interactionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="meeting" EntityType="Self.meeting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="meetingArrangement" EntityType="Self.meetingArrangement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="message" EntityType="Self.message" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="post" EntityType="Self.post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="project" EntityType="Self.project" Schema="dbo" store:Type="Tables" />
@@ -350,13 +371,17 @@
             <End Role="user" EntitySet="user" />
             <End Role="interaction" EntitySet="interaction" />
           </AssociationSet>
-          <AssociationSet Name="FK_meeting_user_student" Association="Self.FK_meeting_user_student">
+          <AssociationSet Name="FK_meeting_user" Association="Self.FK_meeting_user">
             <End Role="user" EntitySet="user" />
             <End Role="meeting" EntitySet="meeting" />
           </AssociationSet>
-          <AssociationSet Name="FK_meeting_user_teacher" Association="Self.FK_meeting_user_teacher">
-            <End Role="user" EntitySet="user" />
+          <AssociationSet Name="FK_meetingArrangement_meeting" Association="Self.FK_meetingArrangement_meeting">
             <End Role="meeting" EntitySet="meeting" />
+            <End Role="meetingArrangement" EntitySet="meetingArrangement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_meetingArrangement_user" Association="Self.FK_meetingArrangement_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="meetingArrangement" EntitySet="meetingArrangement" />
           </AssociationSet>
           <AssociationSet Name="FK_message_receiver" Association="Self.FK_message_receiver">
             <End Role="user" EntitySet="user" />
@@ -439,13 +464,23 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="studentID" Type="Int32" />
-          <Property Name="teacherID" Type="Int32" />
           <Property Name="time" Type="DateTime" Precision="3" />
           <Property Name="type" Type="Boolean" />
           <Property Name="detail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="user" Relationship="Self.FK_meeting_user_student" FromRole="meeting" ToRole="user" />
-          <NavigationProperty Name="user1" Relationship="Self.FK_meeting_user_teacher" FromRole="meeting" ToRole="user" />
+          <Property Name="createDate" Type="DateTime" Precision="3" />
+          <Property Name="supervisorID" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK_meeting_user" FromRole="meeting" ToRole="user" />
+          <NavigationProperty Name="meetingArrangements" Relationship="Self.FK_meetingArrangement_meeting" FromRole="meeting" ToRole="meetingArrangement" />
+        </EntityType>
+        <EntityType Name="meetingArrangement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="meetingID" Type="Int32" />
+          <Property Name="studentID" Type="Int32" />
+          <NavigationProperty Name="meeting" Relationship="Self.FK_meetingArrangement_meeting" FromRole="meetingArrangement" ToRole="meeting" />
+          <NavigationProperty Name="user" Relationship="Self.FK_meetingArrangement_user" FromRole="meetingArrangement" ToRole="user" />
         </EntityType>
         <EntityType Name="message">
           <Key>
@@ -519,8 +554,8 @@
           <NavigationProperty Name="allocations2" Relationship="Self.FK_allocation_user_supervisor" FromRole="user" ToRole="allocation" />
           <NavigationProperty Name="comments" Relationship="Self.FK_comment_user" FromRole="user" ToRole="comment" />
           <NavigationProperty Name="interactions" Relationship="Self.FK_interaction_user_student" FromRole="user" ToRole="interaction" />
-          <NavigationProperty Name="meetings" Relationship="Self.FK_meeting_user_student" FromRole="user" ToRole="meeting" />
-          <NavigationProperty Name="meetings1" Relationship="Self.FK_meeting_user_teacher" FromRole="user" ToRole="meeting" />
+          <NavigationProperty Name="meetings" Relationship="Self.FK_meeting_user" FromRole="user" ToRole="meeting" />
+          <NavigationProperty Name="meetingArrangements" Relationship="Self.FK_meetingArrangement_user" FromRole="user" ToRole="meetingArrangement" />
           <NavigationProperty Name="messages" Relationship="Self.FK_message_receiver" FromRole="user" ToRole="message" />
           <NavigationProperty Name="messages1" Relationship="Self.FK_message_sender" FromRole="user" ToRole="message" />
           <NavigationProperty Name="posts" Relationship="Self.FK_post_user" FromRole="user" ToRole="post" />
@@ -634,7 +669,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_meeting_user_student">
+        <Association Name="FK_meeting_user">
           <End Role="user" Type="Self.user" Multiplicity="0..1" />
           <End Role="meeting" Type="Self.meeting" Multiplicity="*" />
           <ReferentialConstraint>
@@ -642,19 +677,31 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="meeting">
-              <PropertyRef Name="studentID" />
+              <PropertyRef Name="supervisorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_meeting_user_teacher">
+        <Association Name="FK_meetingArrangement_meeting">
+          <End Role="meeting" Type="Self.meeting" Multiplicity="0..1" />
+          <End Role="meetingArrangement" Type="Self.meetingArrangement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="meeting">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="meetingArrangement">
+              <PropertyRef Name="meetingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_meetingArrangement_user">
           <End Role="user" Type="Self.user" Multiplicity="0..1" />
-          <End Role="meeting" Type="Self.meeting" Multiplicity="*" />
+          <End Role="meetingArrangement" Type="Self.meetingArrangement" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="user">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="meeting">
-              <PropertyRef Name="teacherID" />
+            <Dependent Role="meetingArrangement">
+              <PropertyRef Name="studentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -713,6 +760,7 @@
           <EntitySet Name="interactions" EntityType="Self.interaction" />
           <EntitySet Name="interactionTypes" EntityType="Self.interactionType" />
           <EntitySet Name="meetings" EntityType="Self.meeting" />
+          <EntitySet Name="meetingArrangements" EntityType="Self.meetingArrangement" />
           <EntitySet Name="messages" EntityType="Self.message" />
           <EntitySet Name="posts" EntityType="Self.post" />
           <EntitySet Name="projects" EntityType="Self.project" />
@@ -755,13 +803,17 @@
             <End Role="user" EntitySet="users" />
             <End Role="interaction" EntitySet="interactions" />
           </AssociationSet>
-          <AssociationSet Name="FK_meeting_user_student" Association="Self.FK_meeting_user_student">
+          <AssociationSet Name="FK_meeting_user" Association="Self.FK_meeting_user">
             <End Role="user" EntitySet="users" />
             <End Role="meeting" EntitySet="meetings" />
           </AssociationSet>
-          <AssociationSet Name="FK_meeting_user_teacher" Association="Self.FK_meeting_user_teacher">
-            <End Role="user" EntitySet="users" />
+          <AssociationSet Name="FK_meetingArrangement_meeting" Association="Self.FK_meetingArrangement_meeting">
             <End Role="meeting" EntitySet="meetings" />
+            <End Role="meetingArrangement" EntitySet="meetingArrangements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_meetingArrangement_user" Association="Self.FK_meetingArrangement_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="meetingArrangement" EntitySet="meetingArrangements" />
           </AssociationSet>
           <AssociationSet Name="FK_message_receiver" Association="Self.FK_message_receiver">
             <End Role="user" EntitySet="users" />
@@ -839,11 +891,20 @@
             <EntityTypeMapping TypeName="eSupervisorModel.meeting">
               <MappingFragment StoreEntitySet="meeting">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="studentID" ColumnName="studentID" />
-                <ScalarProperty Name="teacherID" ColumnName="teacherID" />
                 <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="detail" ColumnName="detail" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="supervisorID" ColumnName="supervisorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="meetingArrangements">
+            <EntityTypeMapping TypeName="eSupervisorModel.meetingArrangement">
+              <MappingFragment StoreEntitySet="meetingArrangement">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="meetingID" ColumnName="meetingID" />
+                <ScalarProperty Name="studentID" ColumnName="studentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

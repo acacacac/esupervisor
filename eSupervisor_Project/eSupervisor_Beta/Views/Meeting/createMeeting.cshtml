@@ -1,0 +1,98 @@
+﻿@model IEnumerable<eSupervisor_Beta.Models.user>
+@{
+    ViewBag.Title = "createMeeting";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Arrange Meeting</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="checkbox" name="cbListStudentID" checked="checked" value="-1" style="display:none" />
+    <input type="text" name="listStudentID" value="-2" style="display:none" />
+    <table class="table">
+        <tr>
+            <td>Date</td>
+            <td><input type="date" name="time" required="true"/></td>
+        </tr>
+        <tr>
+            <td>Detail</td>
+            <td><textarea name="detail" required="true"></textarea></td>
+        </tr>
+        <tr>
+            <td>Virtual Meeting</td>
+            <td><input type="checkbox" name="virtualMeeting" value="false" id="virtualMeeting"/> </td>
+        </tr>
+    </table>
+    <h3>Select student</h3>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.firstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.lastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dob)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dob)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    <input type="checkbox" name="cbListStudentID" value="@item.id" />
+                </td>
+            </tr>
+        }
+
+    </table>
+    <h2 style="color:red" id="errorFoo">@ViewBag.NoStudentSelected</h2>
+    <input type="submit" value="Arrange" class="btn btn-default" />
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#virtualMeeting').change(function () {
+                var cb = $(this);
+                cb.val(cb.prop('checked'));
+            });
+            $("form").submit(function (e) {
+                $("#errorFoo").empty();
+                var listStudentID = [];
+                $('input:checked[name="cbListStudentID"]').each(function () {
+                    listStudentID.push($(this).attr('value'));
+                });
+                $('input:text[name="listStudentID"]').val(listStudentID.join(','));
+                if (listStudentID.length == 1 && listStudentID[0] == "-1") {
+                    e.preventDefault();
+                    $("#errorFoo").html("Please select at least one student");
+                }
+            });
+        });
+    </script>
+}

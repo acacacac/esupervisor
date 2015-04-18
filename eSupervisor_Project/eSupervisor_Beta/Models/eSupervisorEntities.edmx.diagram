@@ -4,13 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bdcdeeb50507452e85866c2e400f65f8" Name="Diagram1">
+      <Diagram DiagramId="f4415069f9a64036a4c1766c083250c2" Name="Diagram1">
         <EntityTypeShape EntityType="eSupervisorModel.allocation" Width="1.5" PointX="5.25" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.comment" Width="1.5" PointX="7.5" PointY="15.875" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.fileUpload" Width="1.5" PointX="7.5" PointY="23" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.interaction" Width="1.5" PointX="8.25" PointY="10" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.interactionType" Width="1.5" PointX="6" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.meeting" Width="1.5" PointX="5.25" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="eSupervisorModel.meetingArrangement" Width="1.5" PointX="10.5" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.message" Width="1.5" PointX="5.25" PointY="19.375" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.post" Width="1.5" PointX="5.25" PointY="22.5" IsExpanded="true" />
         <EntityTypeShape EntityType="eSupervisorModel.project" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
@@ -26,8 +27,9 @@
         <AssociationConnector Association="eSupervisorModel.FK_fileUpload_post" ManuallyRouted="false" />
         <AssociationConnector Association="eSupervisorModel.FK_interaction_interactionType" ManuallyRouted="false" />
         <AssociationConnector Association="eSupervisorModel.FK_interaction_user_student" ManuallyRouted="false" />
-        <AssociationConnector Association="eSupervisorModel.FK_meeting_user_student" ManuallyRouted="false" />
-        <AssociationConnector Association="eSupervisorModel.FK_meeting_user_teacher" ManuallyRouted="false" />
+        <AssociationConnector Association="eSupervisorModel.FK_meeting_user" ManuallyRouted="false" />
+        <AssociationConnector Association="eSupervisorModel.FK_meetingArrangement_meeting" ManuallyRouted="false" />
+        <AssociationConnector Association="eSupervisorModel.FK_meetingArrangement_user" ManuallyRouted="false" />
         <AssociationConnector Association="eSupervisorModel.FK_message_receiver" ManuallyRouted="false" />
         <AssociationConnector Association="eSupervisorModel.FK_message_sender" ManuallyRouted="false" />
         <AssociationConnector Association="eSupervisorModel.FK_post_user" ManuallyRouted="false" />

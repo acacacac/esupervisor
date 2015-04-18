@@ -31,6 +31,7 @@ namespace eSupervisor_Beta.Models
         public DbSet<interaction> interactions { get; set; }
         public DbSet<interactionType> interactionTypes { get; set; }
         public DbSet<meeting> meetings { get; set; }
+        public DbSet<meetingArrangement> meetingArrangements { get; set; }
         public DbSet<message> messages { get; set; }
         public DbSet<post> posts { get; set; }
         public DbSet<project> projects { get; set; }

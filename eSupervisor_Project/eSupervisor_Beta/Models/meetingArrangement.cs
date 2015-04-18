@@ -12,21 +12,13 @@ namespace eSupervisor_Beta.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class meeting
+    public partial class meetingArrangement
     {
-        public meeting()
-        {
-            this.meetingArrangements = new HashSet<meetingArrangement>();
-        }
-    
         public int id { get; set; }
-        public Nullable<System.DateTime> time { get; set; }
-        public Nullable<bool> type { get; set; }
-        public string detail { get; set; }
-        public Nullable<System.DateTime> createDate { get; set; }
-        public Nullable<int> supervisorID { get; set; }
+        public Nullable<int> meetingID { get; set; }
+        public Nullable<int> studentID { get; set; }
     
+        public virtual meeting meeting { get; set; }
         public virtual user user { get; set; }
-        public virtual ICollection<meetingArrangement> meetingArrangements { get; set; }
     }
 }

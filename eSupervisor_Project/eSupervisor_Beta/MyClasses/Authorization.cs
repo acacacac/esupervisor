@@ -38,6 +38,7 @@ namespace eSupervisor_Beta.MyClasses
             {
                 uss = us.ToList().ElementAt(0);
                 HttpContext.Current.Session["userid"] = uss.id;
+                HttpContext.Current.Session["userName"] = uss.firstName + " " + uss.lastName;
                 if (user.remember == true)
                 {
                     HttpCookie cookie = new HttpCookie("esupervisor-login");
@@ -47,7 +48,7 @@ namespace eSupervisor_Beta.MyClasses
                 }
                 return true;
             }
-            catch
+            catch(Exception e)
             {
                 return false;
             }

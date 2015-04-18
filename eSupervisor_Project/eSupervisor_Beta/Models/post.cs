@@ -11,6 +11,8 @@ namespace eSupervisor_Beta.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
     
     public partial class post
     {
@@ -23,7 +25,9 @@ namespace eSupervisor_Beta.Models
         public int id { get; set; }
         public Nullable<int> authorID { get; set; }
         public string title { get; set; }
+        [UIHint("tinymce_jquery_full"), AllowHtml]
         public string C_content { get; set; }
+        [UIHint("tinymce_jquery_full"), AllowHtml]
         public Nullable<System.DateTime> postTime { get; set; }
         public Nullable<System.DateTime> updateTime { get; set; }
     
