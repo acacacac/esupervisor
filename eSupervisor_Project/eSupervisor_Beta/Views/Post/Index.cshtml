@@ -4,56 +4,63 @@
     ViewBag.Title = "Index";
     int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3) { Layout = "~/Views/Shared/_StudentLayout.cshtml"; } else if (roleID == 2) { Layout = "~/Views/Shared/_TeacherLayout.cshtml"; } else { Layout = "~/Views/Shared/_Layout.cshtml"; }
 }
-
-<h2>View Blog</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.postTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updateTime)
-        </th>
-        <th>
-            @Html.DisplayName("Author Name")
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.title, "Details", new { id = item.id })<br/>
-            @if (item.fileUploads.ToList().Count <= 0) { 
-            <div style=" width: 175px; height: 50px; white-space: normal; text-overflow: ellipsis; overflow: hidden;">
-                @Html.Raw(item.C_content)
-            </div>
-            }
-            else
+<br />
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover" id="dataTables">
+        <thead>
+            <tr style="display:none;">
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
-                @Html.DisplayName("Image of file")
+                <tr>
+                    <td style="display:none;">@Html.DisplayFor(modelItem => item.id)</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <h2>@Html.ActionLink(item.title, "Details", new { id = item.id })</h2>
+                                    @if (item.fileUploads.ToList().Count <= 0)
+                                    {
+                                        string content = item.C_content == null ? "No content" : item.C_content;
+                                        int maxLength = 500;
+                                        if (content.Length > maxLength)
+                                        {
+                                            content = content.Substring(0, maxLength - 3) + "...";
+                                        }
+                                        <div class="post-content">@Html.Raw(content)</div>
+                                    }
+                                    else
+                                    {
+                                        <span><i class="fa fa-download"></i> Click title to download files</span>
+                                    }
+                                    <h6>by <b>@Html.DisplayName(item.user.firstName + " " + item.user.lastName)</b> | @Html.DisplayFor(modelItem => item.updateTime)</h6>
+                                    @if (item.authorID == Convert.ToInt16(Session["userid"].ToString()) && item.fileUploads.ToList().Count == 0)
+                                    {
+                                        <h6>
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                                        </h6>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
             }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.postTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updateTime)
-        </td>
-        <td>
-            @Html.DisplayName(item.user.firstName + " " + item.user.lastName)
-        </td>
-        @if (item.authorID == Convert.ToInt16(Session["userid"].ToString()) && item.fileUploads.ToList().Count == 0) { 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.id }) 
-        </td>
-        }
-    </tr>
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#dataTables').DataTable({
+                responsive: true,
+                "order": [[0, "desc"]]
+            });
+        });
+    </script>
 }
-
-</table>

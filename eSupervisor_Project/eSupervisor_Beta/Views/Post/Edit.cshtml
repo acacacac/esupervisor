@@ -28,7 +28,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.C_content, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.C_content)
+                @Html.TextAreaFor(model => model.C_content, new { id = "post-content" })
                 @Html.ValidationMessageFor(model => model.C_content)
             </div>
         </div>
@@ -48,4 +48,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="~/Scripts/ckeditor/ckeditor/ckeditor.js"></script>
+<script>
+        $(document).ready(function () {
+				CKEDITOR.replace( 'post-content' );
+        });
+</script>
 }

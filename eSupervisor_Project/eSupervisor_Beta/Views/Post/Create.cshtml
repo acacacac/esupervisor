@@ -5,27 +5,25 @@
     int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3) { Layout = "~/Views/Shared/_StudentLayout.cshtml"; } else if (roleID == 2) { Layout = "~/Views/Shared/_TeacherLayout.cshtml"; } else { Layout = "~/Views/Shared/_Layout.cshtml"; }
 }
 
-<h2>Create</h2>
+<br/>
 @using (Html.BeginForm())
 { @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        <h4>post</h4>
-        <hr />
         @Html.ValidationSummary(true)
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.title, new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2" for="C_content">Title</label>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.title, new { required = "true" })
+                <input id="title" name="title" required="true" type="text" value="" class="form-control">
                 @Html.ValidationMessageFor(model => model.title)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.C_content, new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2" for="C_content">Content</label>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.C_content)
+                @Html.TextAreaFor(model => model.C_content, new { id = "post-content" })
                 @Html.ValidationMessageFor(model => model.C_content)
             </div>
         </div>
@@ -40,10 +38,13 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="~/Scripts/ckeditor/ckeditor/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+				CKEDITOR.replace( 'post-content' );
+        });
+    </script>
 }

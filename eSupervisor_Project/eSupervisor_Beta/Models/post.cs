@@ -24,10 +24,10 @@ namespace eSupervisor_Beta.Models
     
         public int id { get; set; }
         public Nullable<int> authorID { get; set; }
+        [AllowHtml]
         public string title { get; set; }
-        [UIHint("tinymce_jquery_full"), AllowHtml]
+        [AllowHtml]
         public string C_content { get; set; }
-        [UIHint("tinymce_jquery_full"), AllowHtml]
         public Nullable<System.DateTime> postTime { get; set; }
         public Nullable<System.DateTime> updateTime { get; set; }
     
