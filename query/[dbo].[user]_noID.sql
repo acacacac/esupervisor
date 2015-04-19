@@ -1,4 +1,4 @@
-insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Rose', 'Wood', '5/8/1994', 'rwood0@comcast.net', '3', 'rwood0', 'DTHQFM');
+insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Rose', 'Wood', '5/8/1994', 'rwood0@comcast.net', '3', 'student', '123');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Steven', 'Spencer', '11/6/1985', 'sspencer1@cdc.gov', '3', 'sspencer1', 'TDuXJz');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Eric', 'Schmidt', '4/17/1988', 'eschmidt2@live.com', '3', 'eschmidt2', 'XbCKlgv1a');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Elizabeth', 'Griffin', '10/24/1986', 'egriffin3@weibo.com', '3', 'egriffin3', '6hxHf5');
@@ -24,9 +24,9 @@ insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, lo
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('George', 'Walker', '3/5/1994', 'gwalkern@vkontakte.ru', '3', 'gwalkern', '3OiXUeyBviPK');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Harold', 'Powell', '2/27/1987', 'hpowello@oaic.gov.au', '3', 'hpowello', 'wt0X9Q');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Christopher', 'Harper', '10/4/1991', 'charperp@admin.ch', '3', 'charperp', 's8WnzI1q');
-insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Jesse', 'Peterson', '8/6/1991', 'jpetersonq@ucoz.ru', '2', 'jpetersonq', 'Q6mcWaktr');
+insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Jesse', 'Peterson', '8/6/1991', 'jpetersonq@ucoz.ru', '2', 'teacher', '123');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Willie', 'Woods', '10/18/1985', 'wwoodsr@smh.com.au', '2', 'wwoodsr', 'VkMpAS5Bz9');
-insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Michael', 'Fox', '10/9/1991', 'mfoxs@sourceforge.net', '1', 'mfoxs', 'Yy1naWh');
+insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Michael', 'Fox', '10/9/1991', 'mfoxs@sourceforge.net', '1', 'admin', '123');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Rebecca', 'Burke', '7/5/1988', 'rburket@hostgator.com', '3', 'rburket', 'TeGg8Vc');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Shawn', 'Stewart', '10/23/1987', 'sstewartu@yahoo.co.jp', '3', 'sstewartu', 'knwz9pf9');
 insert into [dbo].[user] (firstName, lastName, dob, email, roleID, loginCode, loginPass) values ('Marie', 'Matthews', '1/29/1990', 'mmatthewsv@gnu.org', '3', 'mmatthewsv', 'CHpKcyUJ');

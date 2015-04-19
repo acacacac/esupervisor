@@ -182,6 +182,12 @@ namespace eSupervisor_Beta.Controllers
                             return View(querryStudent.ToList());                            
                     }
                     listStudentIDint.RemoveAt(0);
+                    string mailSubject = "Allocation Announcement";
+                    string mailBody;
+                    user student;
+                    user supervisor = db.users.Find((int)Session["supervisorID"]);
+                    user secondMarker = db.users.Find((int)Session["secondMarkerID"]);
+                    string mailBodyForTeachers = "<table><tr><th>Student First Name</th><th>Student Last Name</th><th>Student Email</th></tr>";
                     foreach (int studentID in listStudentIDint)
                     {
                         if ((bool)Session["allocate"])
@@ -207,9 +213,41 @@ namespace eSupervisor_Beta.Controllers
                                 db.Entry(allocation).State = EntityState.Modified;
                             }
                             db.SaveChanges();
-                            sendMail(db.users.Find(studentID).email);
+                            student = db.users.Find(studentID);
+                            mailBody = "Hello student " + student.firstName + " " + student.lastName + ", ";
+                            mailBody += "</br>";
+                            mailBody += "You are ";
+                            if ((bool)Session["allocate"])
+                                mailBody += "allocated";
+                            else
+                                mailBody += "re-allocated";
+                            mailBody += " for your project. Please check your supervisor and second marker detail below:</br>";
+                            mailBody += "<table>";
+                            mailBody += "<tr><td><b>Supervisor First Name</b></td><td>" + supervisor.firstName + "</td></tr>";
+                            mailBody += "<tr><td><b>Supervisor Last Name</b></td><td>" + supervisor.lastName + "</td></tr>";
+                            mailBody += "<tr><td><b>Supervisor Email</b></td><td>" + supervisor.email + "</td></tr>";
+                            mailBody += "<tr></tr>";
+                            mailBody += "<tr><td><b>Second Marker First Name</b></td><td>" + secondMarker.firstName + "</td></tr>";
+                            mailBody += "<tr><td><b>Second Marker Last Name</b></td><td>" + secondMarker.lastName + "</td></tr>";
+                            mailBody += "<tr><td><b>Second Marker Email</b></td><td>" + secondMarker.email + "</td></tr>";
+                            mailBody += "</table>";
+                            mailBody += "</br>Regards!";
+
+                            mailBodyForTeachers += "<tr><td>" + student.firstName + "</td>" + "<td>" + student.lastName + "</td>" + "<td>" + student.email + "</td></tr>";
+                            sendMail(student.email,mailSubject,mailBody);
                         }
                     }
+                    mailBodyForTeachers += "</br>Regards!";
+                    sendMail(supervisor.email, mailSubject, "Hello professor " + supervisor.firstName + " " + supervisor.lastName + ", " +
+                                                            "you are " + 
+                                                            ((bool)Session["allocate"]?"allocated":"re-allocated") +
+                                                            " as supervisor for " + listStudentID.Count() + " students. Please check your students detail below:" +
+                                                            "</br>" + mailBodyForTeachers);
+                    sendMail(secondMarker.email, mailSubject, "Hello professor " + secondMarker.firstName + " " + secondMarker.lastName + ", " +
+                                                            "you are " +
+                                                            ((bool)Session["allocate"] ? "allocated" : "re-allocated") +
+                                                            " as second marker for " + listStudentID.Count() + " students. Please check your students detail below:" +
+                                                            "</br>" + mailBodyForTeachers);
                     return RedirectToAction("viewAllocation");
                 }
                 else
@@ -225,7 +263,7 @@ namespace eSupervisor_Beta.Controllers
             }
             base.Dispose(disposing);
         }
-        public void sendMail(string recipient)
+        public void sendMail(string recipient, string subject, string body)
         {
             recipient = recipient == null ? "noEmailAvailable@gmail.com" : recipient;
             MailMessage mail = new MailMessage();
@@ -233,8 +271,9 @@ namespace eSupervisor_Beta.Controllers
 
             mail.From = new MailAddress("ewsdTest1415@gmail.com");
             mail.To.Add(recipient);
-            mail.Subject = "Allocation";
-            mail.Body = "Hello there is a change in your allocation, please log into the eSupervisor to confirm!";
+            mail.Subject = subject;
+            mail.Body = body;
+            mail.IsBodyHtml = true;
 
             SmtpServer.Port = 587;
             SmtpServer.Credentials = new System.Net.NetworkCredential("ewsdTest1415@gmail.com", "dareyouenter");
