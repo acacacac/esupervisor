@@ -1,11 +1,10 @@
 ﻿@{
     ViewBag.Title = "eSupervisor - Index";
-    Layout = "~/Views/Shared/_LayoutStudent.cshtml";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
 }
 
 <h2>Student Index Page</h2>
 
-<h4>
     @{
     eSupervisor_Beta.Models.eSupervisorEntities db = new eSupervisor_Beta.Models.eSupervisorEntities();
     int stID = (int)Session["userid"];
@@ -20,8 +19,11 @@
         <h4>@Html.ActionLink("View Meeting", "studentViewMeeting", "Meeting")</h4>
         
         <h4>@Html.ActionLink("Create new Post", "Create", "Post")</h4>
+        <h4>@Html.ActionLink("Upload new File", "PostFile", "Post")</h4>
         <h4>@Html.ActionLink("View All Posts", "StudentViewBlog", "Post")</h4>
         <h4>@Html.ActionLink("View My Posts", "MyBlog", "Post")</h4>
+        
+        <h4>@Html.ActionLink("View Dashboard", "StudentDashboard", "DashBoard", new { studentIDPara = (int)Session["userid"]}, null)</h4>
     }
     else
     {
@@ -29,4 +31,3 @@
        <h3>No function available!</h3>
     }
 }
-</h4>

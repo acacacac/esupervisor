@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using eSupervisor_Beta.Models;
 using eSupervisor_Beta.MyClasses;
+using System.Net.Mail;
 
 namespace eSupervisor_Beta.Controllers
 {
@@ -74,7 +75,7 @@ namespace eSupervisor_Beta.Controllers
         public ActionResult selectSecondMarker()
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                if (authorization.allowAccess(1, (int)Session["userid"]) && !string.IsNullOrEmpty(Session["supervisorID"] as string))
+                if (authorization.allowAccess(1, (int)Session["userid"]) && Session["supervisorID"] != null)
                 {
                     int selectedsupervisorID = (int)Session["supervisorID"];
                     var querrySec = from sec in db.users
@@ -91,7 +92,7 @@ namespace eSupervisor_Beta.Controllers
         public ActionResult selectSecondMarker(int secondMarkerID)
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                if (authorization.allowAccess(1, (int)Session["userid"]) && !string.IsNullOrEmpty(Session["supervisorID"] as string))
+                if (authorization.allowAccess(1, (int)Session["userid"]) && Session["supervisorID"] != null)
                 {
                     if (secondMarkerID == -1)
                     {
@@ -113,7 +114,7 @@ namespace eSupervisor_Beta.Controllers
         public ActionResult alloCate()
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                if (authorization.allowAccess(1, (int)Session["userid"]) && !string.IsNullOrEmpty(Session["supervisorID"] as string) && !string.IsNullOrEmpty(Session["secondMarkerID"] as string))
+                if (authorization.allowAccess(1, (int)Session["userid"]) && Session["supervisorID"] != null && Session["secondMarkerID"] != null)
                 {
                     ViewBag.SupervisorName = db.users.Find((int)Session["supervisorID"]).firstName + " " +
                                              db.users.Find((int)Session["supervisorID"]).lastName;
@@ -206,6 +207,7 @@ namespace eSupervisor_Beta.Controllers
                                 db.Entry(allocation).State = EntityState.Modified;
                             }
                             db.SaveChanges();
+                            sendMail(db.users.Find(studentID).email);
                         }
                     }
                     return RedirectToAction("viewAllocation");
@@ -222,6 +224,23 @@ namespace eSupervisor_Beta.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public void sendMail(string recipient)
+        {
+            recipient = recipient == null ? "noEmailAvailable@gmail.com" : recipient;
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+            mail.From = new MailAddress("ewsdTest1415@gmail.com");
+            mail.To.Add(recipient);
+            mail.Subject = "Allocation";
+            mail.Body = "Hello there is a change in your allocation, please log into the eSupervisor to confirm!";
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("ewsdTest1415@gmail.com", "dareyouenter");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
         }
     }
 }

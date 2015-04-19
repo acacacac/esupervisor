@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using eSupervisor_Beta.Models;
 using eSupervisor_Beta.MyClasses;
+using System.IO;
 
 namespace eSupervisor_Beta.Controllers
 {
@@ -19,11 +20,18 @@ namespace eSupervisor_Beta.Controllers
 
         public ActionResult Index()
         {
-            switch (db.users.Find((int)Session["userid"]).roleID)
-            {
-                case 2: return RedirectToAction("TeacherViewBlog");
-                default: return RedirectToAction("StudentViewBlog");
-            }
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    switch (db.users.Find((int)Session["userid"]).roleID)
+                    {
+                        case 2: return RedirectToAction("TeacherViewBlog");
+                        default: return RedirectToAction("StudentViewBlog");
+                    }
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
         public ActionResult StudentViewBlog()
         {
@@ -44,8 +52,8 @@ namespace eSupervisor_Beta.Controllers
                     return View("Index", querryPost.ToList());// Return a list including his teacher and secondmarker
                 }
                 else
-                    return RedirectToAction("NotAuthorised");
-            return RedirectToAction("Login");
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
 
         }
         public ActionResult TeacherViewBlog()
@@ -73,11 +81,11 @@ namespace eSupervisor_Beta.Controllers
                             postsReturned.Add(p);
                         }
                     }
-                    return View("Index", postsReturned.ToList()); // Return a list including his students
+                    return View("Index", postsReturned.Distinct().ToList()); // Return a list including his students
                 }
                 else
-                    return RedirectToAction("NotAuthorised");
-            return RedirectToAction("Login");
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         public ActionResult MyBlog()// Return a list of his blogs
@@ -95,23 +103,120 @@ namespace eSupervisor_Beta.Controllers
                     return View("Index", posts.ToList());
                 }
                 else
-                    return RedirectToAction("NotAuthorised");
-            return RedirectToAction("Login");
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
+
+        public ActionResult PostFile()
+        {
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    return View();
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PostFile(post post)
+        {
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    fileUpload fileu;
+                    int authorID = (int)Session["userid"];
+                    post.authorID = authorID;
+                    post.postTime = DateTime.Now;
+                    post.updateTime = DateTime.Now;
+                    db.posts.Add(post);
+                    if (db.users.Find(authorID).roleID == 3)//student
+                    {
+                        interaction interaction = createInteraction(authorID, 4);
+                        db.interactions.Add(interaction);
+                    }
+                    db.SaveChanges();
+                    var files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var file = files[i];
+                        fileu = new fileUpload();
+                        string path = "";
+                        if (file != null && file.ContentLength > 0)
+                        {
+                            var fileName = Path.GetFileName(file.FileName);
+                            path = Path.Combine(Server.MapPath("~/Document/Files/"), fileName);
+                            file.SaveAs(path);
+                            fileu.fileUri = path;
+                            fileu.postID = post.id;
+                            db.fileUploads.Add(fileu);
+                            db.SaveChanges();
+                        }
+                    }
+                    return RedirectToAction("Index");
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
+        }
+
 
         // GET: /Post/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            post post = db.posts.Find(id);
-            if (post == null)
-            {
-                return HttpNotFound();
-            }
-            return View(post);
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    if (id == null)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    post post = db.posts.Find(id);
+                    var querryComment = from cm in db.comments
+                                        where cm.postID == post.id
+                                        select cm;
+                    List<comment> comments = querryComment.ToList();
+                    PostAndComments postAndComments = new PostAndComments(post, comments);
+                    if (post == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    return View(postAndComments);
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult createComment(string commentContent, string postID)
+        {
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    post post = db.posts.Find(Convert.ToInt16(postID));
+                    int commenterID = (int)Session["userid"];
+                    comment cm = new comment();
+                    cm.C_content = commentContent;
+                    cm.postID = post.id;
+                    cm.time = DateTime.Now;
+                    cm.commenterID = commenterID;
+                    if (ModelState.IsValid)
+                    {
+                        if (db.users.Find(commenterID).roleID == 3)//student
+                        {
+                            interaction interaction = createInteraction(commenterID, 5);
+                            db.interactions.Add(interaction);
+                        }
+                        db.comments.Add(cm);
+                        db.SaveChanges();
+                    }
+                    return RedirectToAction("Details/" + postID);
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         // GET: /Post/Create
@@ -123,8 +228,8 @@ namespace eSupervisor_Beta.Controllers
                     return View();
                 }
                 else
-                    return RedirectToAction("NotAuthorised");
-            return RedirectToAction("Login");
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         // POST: /Post/Create
@@ -134,49 +239,54 @@ namespace eSupervisor_Beta.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,authorID,title,C_content,postTime,updateTime")] post post)
         {
-             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                 if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
-                 {
-                     post.postTime = DateTime.Now;
-                     post.updateTime = DateTime.Now;
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    int authorID = Convert.ToInt16(Session["userid"]);
+                    post.postTime = DateTime.Now;
+                    post.updateTime = DateTime.Now;
+                    if (ModelState.IsValid)
+                    {
+                        post.authorID = authorID;
+                        db.posts.Add(post);
+                        if (db.users.Find(authorID).roleID == 3)//student
+                        {
+                            interaction interaction = createInteraction(authorID, 2);
+                            db.interactions.Add(interaction);
+                        }
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
 
-                     if (ModelState.IsValid)
-                     {
-                         post.authorID = Convert.ToInt16(Session["userid"]);
-                         db.posts.Add(post);
-                         db.SaveChanges();
-                         return RedirectToAction("Index");
-                     }
-
-                     ViewBag.authorID = new SelectList(db.users, "id", "firstName", post.authorID);
-                     return View(post);
-                 }
-                 else
-                     return RedirectToAction("NotAuthorised");
-             return RedirectToAction("Login");
+                    ViewBag.authorID = new SelectList(db.users, "id", "firstName", post.authorID);
+                    return View(post);
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         // GET: /Post/Edit/5
         public ActionResult Edit(int? id)
         {
-             if (authorization.validateRememberedUser() || Session["userid"] != null)
-                 if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
-                 {
-                     if (id == null)
-                     {
-                         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                     }
-                     post post = db.posts.Find(id);
-                     if (post == null)
-                     {
-                         return HttpNotFound();
-                     }
-                     ViewBag.authorID = new SelectList(db.users, "id", "firstName", post.authorID);
-                     return View(post);
-                 }
-                 else
-                     return RedirectToAction("NotAuthorised");
-             return RedirectToAction("Login");
+            if (authorization.validateRememberedUser() || Session["userid"] != null)
+                if (authorization.allowAccess(3, (int)Session["userid"]) || authorization.allowAccess(2, (int)Session["userid"]))
+                {
+                    if (id == null)
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    }
+                    post post = db.posts.Find(id);
+                    if (post == null)
+                    {
+                        return HttpNotFound();
+                    }
+                    ViewBag.authorID = new SelectList(db.users, "id", "firstName", post.authorID);
+                    return View(post);
+                }
+                else
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         // POST: /Post/Edit/5
@@ -193,6 +303,11 @@ namespace eSupervisor_Beta.Controllers
 
                     if (ModelState.IsValid)
                     {
+                        if (db.users.Find(post.authorID).roleID == 3)//student
+                        {
+                            interaction interaction = createInteraction((int)post.authorID, 3);
+                            db.interactions.Add(interaction);
+                        }
                         db.Entry(post).State = EntityState.Modified;
                         db.SaveChanges();
                         return RedirectToAction("Index");
@@ -201,8 +316,8 @@ namespace eSupervisor_Beta.Controllers
                     return View(post);
                 }
                 else
-                    return RedirectToAction("NotAuthorised");
-            return RedirectToAction("Login");
+                    return RedirectToAction("NotAuthorised", "Home");
+            return RedirectToAction("Login", "Home");
         }
 
         // GET: /Post/Delete/5
@@ -229,6 +344,15 @@ namespace eSupervisor_Beta.Controllers
             db.posts.Remove(post);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public interaction createInteraction(int authorID, int interactionType)
+        {
+            interaction interaction = new interaction();
+            interaction.interactionTypeID = interactionType;
+            interaction.studentID = authorID;
+            interaction.time = DateTime.Now;
+            return interaction;
         }
 
         protected override void Dispose(bool disposing)

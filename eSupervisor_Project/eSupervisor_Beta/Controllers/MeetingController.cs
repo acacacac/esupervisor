@@ -44,12 +44,18 @@ namespace eSupervisor_Beta.Controllers
                     List<int> listStudentIDint = listStudentID.Split(',').Select(int.Parse).ToList();
                     int supervisorID = (int)Session["userid"];
                     virtualMeeting = virtualMeeting == null ? false : true;
-                    if (listStudentIDint.Count == 1)
+                    if (listStudentIDint.Count == 1 || time < DateTime.Now.Date)
                     {
                         var querryStudents = from st in db.users
                                              from alc in db.allocations
                                              where alc.studentID == st.id && alc.supervisorID == supervisorID
                                              select st;
+                        if (time < DateTime.Now.Date)
+                        {
+                            ViewBag.NoStudentSelected = "Please choose a valid date!";
+                            return View(querryStudents.ToList());
+                        }
+
                         if (listStudentIDint.ElementAt(0) == -2)
                             ViewBag.NoStudentSelected = "Please turn on javascript to proceed!";
                         else

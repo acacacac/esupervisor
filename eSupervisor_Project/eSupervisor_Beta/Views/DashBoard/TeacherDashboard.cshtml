@@ -1,0 +1,50 @@
+﻿@model IEnumerable<eSupervisor_Beta.MyClasses.TeacherDashboard>
+
+@{
+    ViewBag.Title = "TeacherDashboard";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
+}
+
+<h2>Teacher Dashboard</h2>
+<h3>Project Students</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.student.firstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.student.lastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.student.dob)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.student.email)
+        </th>
+        <th>
+            @Html.DisplayName("Role to student")
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.student.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.student.lastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.student.dob)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.student.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.roleToStudent)
+        </td>
+    </tr>
+}
+
+</table>

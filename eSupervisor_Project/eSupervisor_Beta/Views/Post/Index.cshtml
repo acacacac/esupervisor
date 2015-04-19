@@ -12,9 +12,6 @@
             @Html.DisplayNameFor(model => model.title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.C_content)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.postTime)
         </th>
         <th>
@@ -29,10 +26,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.title)
-        </td>
-        <td>
-            @Html.Raw(item.C_content)
+            @Html.ActionLink(item.title, "Details", new { id = item.id })<br/>
+            @if (item.fileUploads.ToList().Count <= 0) { 
+            <div style=" width: 175px; height: 50px; white-space: normal; text-overflow: ellipsis; overflow: hidden;">
+                @Html.Raw(item.C_content)
+            </div>
+            }
+            else
+            {
+                @Html.DisplayName("Image of file")
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.postTime)
@@ -43,9 +46,10 @@
         <td>
             @Html.DisplayName(item.user.firstName + " " + item.user.lastName)
         </td>
-        @if (item.authorID == Convert.ToInt16(Session["userid"].ToString())) { 
+        @if (item.authorID == Convert.ToInt16(Session["userid"].ToString()) && item.fileUploads.ToList().Count == 0) { 
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.id }) 
         </td>
         }
     </tr>

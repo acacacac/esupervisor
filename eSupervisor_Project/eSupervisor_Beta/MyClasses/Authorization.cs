@@ -31,7 +31,7 @@ namespace eSupervisor_Beta.MyClasses
         public bool validateUser(UserLogin user)
         {
             var us = from u in db.users
-                     where u.loginCode.Equals(user.code) && u.loginPass.Equals(user.pwd)
+                     where u.loginCode.Trim().Equals(user.code.Trim()) && u.loginPass.Equals(user.pwd)
                      select u;
             user uss = new user();
             try
@@ -70,6 +70,18 @@ namespace eSupervisor_Beta.MyClasses
                     return true;
             }
             return false;
+        }
+
+        public void logOut()
+        {
+            HttpContext.Current.Session["userid"] = null;
+            HttpContext.Current.Session["username"] = null;
+            if (HttpContext.Current.Request.Cookies.AllKeys.Contains("esupervisor-login"))
+            {
+                HttpCookie cookie = HttpContext.Current.Request.Cookies["esupervisor-login"];
+                cookie.Expires = DateTime.Now.AddDays(-1);
+               HttpContext.Current.Response.Cookies.Add(cookie);
+            }
         }
     }
 }

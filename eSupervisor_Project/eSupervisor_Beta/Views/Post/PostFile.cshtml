@@ -1,0 +1,42 @@
+﻿@model eSupervisor_Beta.Models.post
+@{
+    ViewBag.Title = "PostFile";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
+}
+
+<h2>Upload a file</h2>
+@using (Html.BeginForm("PostFile", "Post", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>New File</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.title, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.title, new { required = "true" })
+                @Html.ValidationMessageFor(model => model.title)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Upload File", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" id="file" name="file" accept=".pdf,.zip"/><br />
+                <input type="file" id="file" name="file" accept=".pdf,.zip" /><br />
+                <input type="file" id="file" name="file" accept=".pdf,.zip" /><br/>
+                <input type="file" id="file" name="file" accept=".pdf,.zip" /><br />
+                <input type="file" id="file" name="file" accept=".pdf,.zip" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+

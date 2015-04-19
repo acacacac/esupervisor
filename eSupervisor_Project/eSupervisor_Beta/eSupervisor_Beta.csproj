@@ -150,6 +150,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AllocationController.cs" />
+    <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MeetingController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
@@ -216,9 +217,13 @@
       <DependentUpon>eSupervisorEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="MyClasses\Authorization.cs" />
+    <Compile Include="MyClasses\DetailDashboard.cs" />
+    <Compile Include="MyClasses\PostAndComments.cs" />
+    <Compile Include="MyClasses\StudentDashboardProps.cs" />
     <Compile Include="MyClasses\StudentViewMeeting.cs" />
     <Compile Include="MyClasses\StudentWIthSupAndSec.cs" />
     <Compile Include="MyClasses\SupervisorAndSecondMarkerID.cs" />
+    <Compile Include="MyClasses\TeacherDashboard.cs" />
     <Compile Include="MyClasses\TeacherViewMeeting.cs" />
     <Compile Include="MyClasses\UserLogin.cs" />
     <Compile Include="MyClasses\UserAndNumbOfMess.cs" />
@@ -529,9 +534,8 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_TeacherLayout.cshtml" />
     <Content Include="Views\Home\TeacherIndex.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_MessagesList.cshtml" />
@@ -558,8 +562,14 @@
     <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\tinymce_jquery_full.cshtml" />
-    <Content Include="Views\Shared\_LayoutStudent.cshtml" />
-    <Content Include="Views\Shared\_LayoutTeacher.cshtml" />
+    <Content Include="Views\Post\Delete.cshtml" />
+    <Content Include="Views\Post\PostFile.cshtml" />
+    <Content Include="Views\DashBoard\StudentDashboard.cshtml" />
+    <Content Include="Views\Shared\_DetailDashboard.cshtml" />
+    <Content Include="Views\DashBoard\AuthorisedStaffDashboard.cshtml" />
+    <Content Include="Views\DashBoard\TeacherDashboard.cshtml" />
+    <Content Include="Views\Shared\_StudentLayout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

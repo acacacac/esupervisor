@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using eSupervisor_Beta.Models;
 using eSupervisor_Beta.MyClasses;
 using eSupervisor_Beta.Hubs;
-using System.Net.Mail;
+
 
 namespace eSupervisor_Beta.Controllers
 {
@@ -93,13 +93,7 @@ namespace eSupervisor_Beta.Controllers
         }
         public ActionResult Logout()
         {
-            Session["userid"] = null;
-            if (this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("esupervisor-login"))
-            {
-                HttpCookie cookie = this.ControllerContext.HttpContext.Request.Cookies["esupervisor-login"];
-                cookie.Expires = DateTime.Now.AddDays(-1);
-                this.ControllerContext.HttpContext.Response.Cookies.Add(cookie);
-            }
+            authorization.logOut();
             return RedirectToAction("Login");
         }
         public int redirectCode()
@@ -123,23 +117,6 @@ namespace eSupervisor_Beta.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        public void sendMail()
-        {
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-            mail.From = new MailAddress("your_email_address@gmail.com");
-            mail.To.Add("kid3pzaj@gmail.com");
-            mail.Subject = "Test Mail";
-            mail.Body = "This is for testing SMTP mail from GMAIL";
-
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("kid3pzaj102@gmail.com", "goodlucktoyou");
-            SmtpServer.EnableSsl = true;
-
-            SmtpServer.Send(mail);
         }
     }
 }

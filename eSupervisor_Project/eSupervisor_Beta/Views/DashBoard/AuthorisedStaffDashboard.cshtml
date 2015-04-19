@@ -1,0 +1,61 @@
+﻿@model IEnumerable<eSupervisor_Beta.Models.user>
+
+@{
+    ViewBag.Title = "AuthorisedStaffDashboard";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
+}
+
+<h2>Authorised Staff Dashboard</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.firstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dob)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.role.name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dob)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.role.name)
+            </td>
+            <td>
+                @if (item.roleID == 3)
+                {
+                    @Html.ActionLink("View Dashboard", "StudentDashboard", "DashBoard", new { studentIDPara = item.id }, null)
+                }
+                else
+                {
+                    @Html.ActionLink("View Dashboard", "TeacherDashboard", "DashBoard", new { teacherIDPara = item.id }, null)
+                }
+            </td>
+        </tr>
+    }
+
+</table>

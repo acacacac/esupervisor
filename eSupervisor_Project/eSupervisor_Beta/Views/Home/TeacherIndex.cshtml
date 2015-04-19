@@ -2,15 +2,18 @@
 
 @{
     ViewBag.Title = "eSupervisor - Index";
-    Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
 }
  <h2>Teacher Index Page</h2>
 
 <h4>@Html.ActionLink("View Message", "TeacherMessage", "Message")</h4>
 <h4>@Html.ActionLink("Arrange Meeting", "createMeeting", "Meeting")</h4>
 <h4>@Html.ActionLink("View Meeting", "teacherViewMeeting", "Meeting")</h4>
-
+<br />
 <h4>@Html.ActionLink("Create new Post", "Create", "Post")</h4>
+<h4>@Html.ActionLink("Upload new File", "PostFile", "Post")</h4>
 <h4>@Html.ActionLink("View All Posts", "TeacherViewBlog", "Post")</h4>
 <h4>@Html.ActionLink("View My Posts", "MyBlog", "Post")</h4>
+<br />
+<h4>@Html.ActionLink("View Dashboard", "TeacherDashboard", "DashBoard", new { teacherIDPara = (int)Session["userid"] }, null)</h4>
 

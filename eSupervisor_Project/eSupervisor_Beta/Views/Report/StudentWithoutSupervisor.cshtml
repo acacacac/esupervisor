@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<eSupervisor_Beta.Models.user>
 @{
     ViewBag.Title = "StudentWithoutSupervisor";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
 }
 
 <h2>Report: Students without Supervisor</h2>

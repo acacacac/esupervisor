@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "eSupervisor - Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
 }
 
 <h2>Authorised Staff Index Page</h2>
@@ -14,4 +14,6 @@
 <h4>@Html.ActionLink("Allocate Students", "selectSupervisor", "Allocation", new { allocate = true},null)</h4>
 <h4>@Html.ActionLink("Re-allocate Students", "selectSupervisor", "Allocation", new { allocate = false},null)</h4>
 <h4>@Html.ActionLink("View Allocation", "viewAllocation", "Allocation")</h4>
+<h2>Allocation:</h2>
+<h4>@Html.ActionLink("View Dashboards", "AuthorisedStaffDashboard", "DashBoard")</h4>
 

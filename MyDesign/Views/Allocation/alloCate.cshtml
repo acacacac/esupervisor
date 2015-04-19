@@ -68,16 +68,17 @@
         @section Scripts{
             <script>
                 $("form").submit(function (e) {
-                    var listStudentID = [];
-                    $('input:checked').each(function () {
-                        listStudentID.push($(this).attr('value'));
-                    });
-                    $('input:text').val(listStudentID.join(','));
-                    if (listStudentID.length == 1 && listStudentID[0] == "-1") {
-                        e.preventDefault();
-                        $("#errorFoo").html("Please select at least one student");
-                    }
-                });
+					$("#errorFoo").html("Sending email to students and teachers. Please wait...");
+					var listStudentID = [];
+					$('input:checked').each(function () {
+						listStudentID.push($(this).attr('value'));
+					});
+					$('input:text').val(listStudentID.join(','));
+					if (listStudentID.length == 1 && listStudentID[0] == "-1") {
+						e.preventDefault();
+						$("#errorFoo").html("Please select at least one student");
+					}
+				});
 
                 $(document).ready(function () {
                     $('#dataTables').DataTable({

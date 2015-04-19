@@ -1,7 +1,7 @@
 ﻿@model eSupervisor_Beta.MyClasses.SupervisorAndSecondMarkerID
 @{
     ViewBag.Title = "StudentMessage";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
 }
 
 <div class="row" style="margin-top:30px;">

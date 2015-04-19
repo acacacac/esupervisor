@@ -10,7 +10,11 @@ namespace eSupervisor_Beta
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.unobtrusive-ajax.js"));
+                        "~/Scripts/jquery.unobtrusive-ajax.js",
+                        "~/Scripts/metisMenu.min.js",
+                        "~/Scripts/jquery.dataTables.min.js",
+                        "~/Scripts/dataTables.bootstrap.min.js",
+                        "~/Scripts/sb-admin-2.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -21,16 +25,8 @@ namespace eSupervisor_Beta
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/sb-admin-2").Include(
-                      "~/Scripts/jquery.min.js",
-                      "~/Scripts/bootstrap.min.js", 
-                      "~/Scripts/metisMenu.min.js",
-                      "~/Scripts/jquery.dataTables.min.js",
-                      "~/Scripts/dataTables.bootstrap.min.js",
-                      "~/Scripts/sb-admin-2.js")); 
-
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.min.css",
+                      "~/Content/bootstrap.css",
                       "~/Content/metisMenu.min.css",
                       "~/Content/dataTables.bootstrap.css",
                       "~/Content/dataTables.responsive.css",

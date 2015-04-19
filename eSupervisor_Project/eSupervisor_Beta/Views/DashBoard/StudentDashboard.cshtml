@@ -1,0 +1,69 @@
+﻿@model eSupervisor_Beta.MyClasses.StudentDashboardProps
+
+@{
+    ViewBag.Title = "StudentDashboard";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
+}
+
+<h2>StudentDashboard</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Messages")
+        </th>
+        <th>
+            @Html.DisplayName("Posts")
+        </th>
+        <th>
+            @Html.DisplayName("Comments")
+        </th>
+        <th>@Html.DisplayName("Meetings")</th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.numberOfMess)<br />
+            @Html.DisplayFor(model => model.numberOfMessWithSup) sent to supervisor<br />
+            Last sent at: @Html.DisplayName(Model.lastSentSup)<br />
+            @Html.DisplayFor(model => model.numberOfMessWithSec) sent to second marker<br />
+            Last sent at: @Html.DisplayName(Model.lastSentSec)<br />
+            <a class="view-detail" yd="@ViewBag.studentID" control="MessagesDetailDashboard" style="cursor:pointer">View Detail</a>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.numberOfPost)<br />
+            Last post at: @Html.DisplayName(Model.lastPost)<br />
+            <a class="view-detail" yd="@ViewBag.studentID" control="PostsDetailDashboard" style="cursor:pointer">View Detail</a>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.numberOfComment)<br />
+            Last comment at: @Html.DisplayName(Model.lastComment)<br />
+            <a class="view-detail" yd="@ViewBag.studentID" control="CommentsDetailDashboard" style="cursor:pointer">View Detail</a>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.numberOfMeeting)<br />
+            Last meeting on: @Html.DisplayName(Model.lastMeeting)
+        </td>
+    </tr>
+    }
+</table>
+<div id="detail-tbl">
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".view-detail").click(function () {
+                var studentIDPara = $(this).attr("yd");
+                var action = $(this).attr("control");
+                $.ajax({
+                    type: "GET",
+                    url: "/DashBoard/" + action,
+                    data: { studentIDPara: studentIDPara },
+                    datatype: "html",
+                    success: function (data) {
+                        $('#detail-tbl').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}

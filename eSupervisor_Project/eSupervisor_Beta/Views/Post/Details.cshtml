@@ -1,4 +1,4 @@
-﻿@model eSupervisor_Beta.Models.post
+﻿@model eSupervisor_Beta.MyClasses.PostAndComments
 
 @{
     ViewBag.Title = "Details";
@@ -8,51 +8,102 @@
 
 <div>
     <h4>post</h4>
-	<hr />
+    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.title)
+            @Html.DisplayNameFor(model => model.post.title)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.title)
+            @Html.DisplayFor(model => model.post.title)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.C_content)
+            @Html.DisplayNameFor(model => model.post.C_content)
+        </dt>
+        @if (Model.post.fileUploads.ToList().Count <= 0)
+        {
+            <dd>
+                @Html.Raw(Model.post.C_content)
+            </dd>
+        }
+        else
+        {
+            foreach (eSupervisor_Beta.Models.fileUpload file in Model.post.fileUploads)
+            {
+                string uri = file.fileUri;
+                uri = uri.Replace(' ', '%');
+                <a href="@uri" target="_blank">Download</a>
+            }
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.post.postTime)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.C_content)
+            @Html.DisplayFor(model => model.post.postTime)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.postTime)
+            @Html.DisplayNameFor(model => model.post.updateTime)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.postTime)
+            @Html.DisplayFor(model => model.post.updateTime)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.updateTime)
+            @Html.DisplayName("Author")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updateTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.user.firstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.user.firstName)
+            @Html.DisplayName(Model.post.user.firstName + " " + Model.post.user.lastName)
         </dd>
 
     </dl>
 </div>
+
+<div>
+    <h4>comments</h4>
+    <hr />
+    <table class="table">
+        @foreach (var cm in Model.comments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayName(cm.user.firstName + " " + cm.user.lastName)
+                </td>
+                <td>
+                    @Html.Raw(cm.C_content)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@using (Html.BeginForm("createComment", "Post"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>comment</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.Label("Comment:", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" name="commentContent" width="400" height="200" required="true" />
+                <input type="text" name="postID" style="display:none" value="@Model.post.id" />
+            </div>
+        </div>
+        <input type="submit" value="Comment" class="btn-default" />
+    </div>
+}
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model.post.user.id == (int)Session["userid"])
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.post.id }) @Html.DisplayName(" | ")
+        @Html.ActionLink("Delete", "Delete", new { id = Model.post.id })<br />
+    }
+    @Html.ActionLink("Back to Posts", "Index")
 </p>

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<eSupervisor_Beta.MyClasses.DetailDashboard>
+
+@{
+    ViewBag.Title = "StudentDashboard";
+    int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3){Layout = "~/Views/Shared/_StudentLayout.cshtml";}else if (roleID == 2) {Layout = "~/Views/Shared/_TeacherLayout.cshtml";} else {Layout = "~/Views/Shared/_Layout.cshtml";}
+}
+
+<h2>@ViewBag.TypeDetail</h2>
+
+<table class="table">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.date</td>
+            <td width="70%" class="bar"><div style="height:15px;width:0;transition:all 0.5s"></div></td>
+            <td class="val">@item.number</td>
+        </tr>
+    }
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var rows = $("tr");
+            var max = 0;
+            rows.each(function () {
+                var val = parseInt($(this).find(".val").text());
+                if (val > max) {
+                    max = val;
+                }
+            });
+            rows.each(function () {
+                var val = parseInt($(this).find(".val").text());
+                var bar = $(this).find(".bar").find("div");
+                bar.css("width", val * 100 / max + "%");
+                if (val < max / 4)
+                    bar.css("background", "red");
+                else if (val >= max / 4 && val < max / 2)
+                    bar.css("background", "orange");
+                else
+                    bar.css("background", "green");
+            });
+        });
+
+    </script>
+}
+
