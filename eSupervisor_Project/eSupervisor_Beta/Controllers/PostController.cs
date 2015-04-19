@@ -148,7 +148,7 @@ namespace eSupervisor_Beta.Controllers
                             var fileName = Path.GetFileName(file.FileName);
                             path = Path.Combine(Server.MapPath("~/Document/Files/"), fileName);
                             file.SaveAs(path);
-                            fileu.fileUri = path;
+                            fileu.fileUri = "//Document//Files//" + fileName;
                             fileu.postID = post.id;
                             db.fileUploads.Add(fileu);
                             db.SaveChanges();

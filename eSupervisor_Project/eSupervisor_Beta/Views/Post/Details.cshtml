@@ -33,8 +33,7 @@
             foreach (eSupervisor_Beta.Models.fileUpload file in Model.post.fileUploads)
             {
                 string uri = file.fileUri;
-                uri = uri.Replace(' ', '%');
-                <a href="@uri" target="_blank">Download</a>
+                <a href="../../@uri" target="_blank">Download</a>
             }
         }
         <dt>
