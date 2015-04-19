@@ -39,7 +39,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i>Hello, James Cameron</a>
+                            <a href="~Views/DashBoard/AuthorisedStaffDashboard"><i class="fa fa-user fa-fw"></i>Hello, @Html.DisplayName(string.IsNullOrEmpty(Session["username"] as string) ? " " : Session["username"].ToString())</a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -55,10 +55,10 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="../DashBoard/AuthorisedStaffDashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i>Report<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Report<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     @Html.ActionLink("Number of Messages Statistics", "NumbOfMess", "Report")
@@ -74,7 +74,7 @@
                                 </li>
                             </ul>
                         <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i>Allocation<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Allocation<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     @Html.ActionLink("Allocate Students", "selectSupervisor", "Allocation", new { allocate = true }, null)

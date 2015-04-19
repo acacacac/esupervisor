@@ -33,7 +33,7 @@ namespace eSupervisor_Beta.Controllers
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
                 if (authorization.allowAccess(1, (int)Session["userid"]))
-                    return View();
+                    return RedirectToAction("AuthorisedStaffDashboard", "DashBoard");
                 else
                     return RedirectToAction("NotAuthorised");
             return RedirectToAction("Login");
@@ -42,7 +42,7 @@ namespace eSupervisor_Beta.Controllers
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
                 if (authorization.allowAccess(2, (int)Session["userid"]))
-                    return View();
+                    return RedirectToAction("TeacherDashboard", "DashBoard", new {teacherIDPara = Session["userid"]});
                 else
                     return RedirectToAction("NotAuthorised");
             return RedirectToAction("Login");
@@ -52,7 +52,7 @@ namespace eSupervisor_Beta.Controllers
         {
             if (authorization.validateRememberedUser() || Session["userid"] != null)
                 if (authorization.allowAccess(3, (int)Session["userid"]))
-                    return View();
+                    return RedirectToAction("StudentDashboard", "DashBoard", new { studentIDPara = Session["userid"] });
                 else
                     return RedirectToAction("NotAuthorised");
             return RedirectToAction("Login");
