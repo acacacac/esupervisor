@@ -1,10 +1,50 @@
 ﻿@model eSupervisor_Beta.MyClasses.SupervisorAndSecondMarkerID
 @{
-    ViewBag.Title = "StudentMessage";
+    ViewBag.Title = "Chat with Supervisor";
     int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3) { Layout = "~/Views/Shared/_StudentLayout.cshtml"; } else if (roleID == 2) { Layout = "~/Views/Shared/_TeacherLayout.cshtml"; } else { Layout = "~/Views/Shared/_Layout.cshtml"; }
 }
 
-<br/><br/>
+<div class="row" style="margin-top:30px;">
+    <h3>@ViewBag.Error</h3>
+    @if (Model.supervisorName != null)
+    {
+        @Ajax.ActionLink("Chat with Supervisor " + Model.supervisorName,
+                        "GetMessages",
+                        new { receiverID = Model.supervisorID },
+                        new AjaxOptions
+                         {
+                             UpdateTargetId = "messagesTable", // <-- DOM element ID to update
+                             InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                             HttpMethod = "GET" // <-- HTTP method
+                         },
+                         new { id = Model.supervisorID })
+    }
+    else
+    {
+        <h3>You have no supervisor!</h3>
+    }
+    <br />
+    @if (Model.secondMarkerName != null)
+    {
+        @Ajax.ActionLink("Chat with Second Marker " + Model.secondMarkerName,
+                        "GetMessages",
+                        new { receiverID = Model.secondMarkerID },
+                        new AjaxOptions
+                         {
+                             UpdateTargetId = "messagesTable", // <-- DOM element ID to update
+                             InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                             HttpMethod = "GET" // <-- HTTP method
+                         },
+                         new { id = Model.secondMarkerID })
+    }
+    else
+    {
+        <h3>You have no second marker!</h3>
+    }
+</div>
+
+<br/>
+
 <div class="chat-panel panel panel-default">
     <div class="panel-heading">
         <i class="fa fa-comments fa-fw"></i>
@@ -31,44 +71,6 @@
 </div>
 <!-- /.panel .chat-panel -->
 
-<div class="row" style="margin-top:30px;">
-    <h3>@ViewBag.Error</h3>
-    @if (Model.supervisorName != null)
-    {
-        @Ajax.ActionLink("Chat with supervisor " + Model.supervisorName,
-                        "GetMessages",
-                        new { receiverID = Model.supervisorID },
-                        new AjaxOptions
-                         {
-                             UpdateTargetId = "messagesTable", // <-- DOM element ID to update
-                             InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                             HttpMethod = "GET" // <-- HTTP method
-                         },
-                         new { id = Model.supervisorID })
-    }
-    else
-    {
-        <h3>You have no supervisor!</h3>
-    }
-    <br />
-    @if (Model.secondMarkerName != null)
-    {
-        @Ajax.ActionLink("Chat with second marker " + Model.secondMarkerName,
-                        "GetMessages",
-                        new { receiverID = Model.secondMarkerID },
-                        new AjaxOptions
-                         {
-                             UpdateTargetId = "messagesTable", // <-- DOM element ID to update
-                             InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                             HttpMethod = "GET" // <-- HTTP method
-                         },
-                         new { id = Model.secondMarkerID })
-    }
-    else
-    {
-        <h3>You have no second marker!</h3>
-    }
-</div>
 
 <br />
 

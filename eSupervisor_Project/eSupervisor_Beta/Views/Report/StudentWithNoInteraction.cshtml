@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<eSupervisor_Beta.MyClasses.StudentWithNoInteraction>
 @{
-    ViewBag.Title = "StudentWithNoInteraction";
+    ViewBag.Title = "Student With No Interaction";
     int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3) { Layout = "~/Views/Shared/_StudentLayout.cshtml"; } else if (roleID == 2) { Layout = "~/Views/Shared/_TeacherLayout.cshtml"; } else { Layout = "~/Views/Shared/_Layout.cshtml"; }
 }
 

@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<eSupervisor_Beta.Models.post>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "View posts";
     int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3) { Layout = "~/Views/Shared/_StudentLayout.cshtml"; } else if (roleID == 2) { Layout = "~/Views/Shared/_TeacherLayout.cshtml"; } else { Layout = "~/Views/Shared/_Layout.cshtml"; }
 }
 <br />
@@ -35,7 +35,12 @@
                                     }
                                     else
                                     {
-                                        <span><i class="fa fa-download"></i> Click title to download files</span>
+                                        <br/>
+                                        <p>
+                                            <img src="http://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-download-icon.png" alt="Click title to download files" style="width: 32px; height: 32px" />
+                                            Click title to download files
+                                        </p>
+                                        <br/>
                                     }
                                     <h6>by <b>@Html.DisplayName(item.user.firstName + " " + item.user.lastName)</b> | @Html.DisplayFor(modelItem => item.updateTime)</h6>
                                     @if (item.authorID == Convert.ToInt16(Session["userid"].ToString()) && item.fileUploads.ToList().Count == 0)

@@ -1,7 +1,7 @@
 ﻿@model eSupervisor_Beta.Models.post
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Write new post";
     int roleID = (int)new eSupervisor_Beta.Models.eSupervisorEntities().users.Find((int)Session["userid"]).roleID; if (roleID == 3) { Layout = "~/Views/Shared/_StudentLayout.cshtml"; } else if (roleID == 2) { Layout = "~/Views/Shared/_TeacherLayout.cshtml"; } else { Layout = "~/Views/Shared/_Layout.cshtml"; }
 }
 
@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="C_content">Title</label>
             <div class="col-md-10">
-                <input id="title" name="title" required="true" type="text" value="" class="form-control">
+                <input id="title" name="title" required="true" type="text" value="" class="form-control" style="width: 100%">
                 @Html.ValidationMessageFor(model => model.title)
             </div>
         </div>
@@ -32,7 +32,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Post" class="btn btn-default" />
             </div>
         </div>
     </div>
