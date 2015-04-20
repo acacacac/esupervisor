@@ -71,7 +71,7 @@ namespace eSupervisor_Beta.Controllers
                             firstDate = (DateTime)querryMess.ToList().ElementAt(0).time;
                             lastDate = (DateTime)querryMess.ToList().ElementAt(querryMess.ToList().Count - 1).time;
                             numbOfMess = querryMess.ToList().Count;
-                            numbOfDays = lastDate.Subtract(firstDate).Days;
+                            numbOfDays = lastDate.Subtract(firstDate).Days + 1;
                             averageNumbOfMess = Convert.ToDouble((numbOfMess / (double)numbOfDays).ToString("#.##"));
                         }
                         catch //No messages have been sent

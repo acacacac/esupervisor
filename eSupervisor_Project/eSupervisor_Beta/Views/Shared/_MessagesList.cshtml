@@ -1,20 +1,48 @@
 ﻿@model IEnumerable<eSupervisor_Beta.Hubs.messageContainer>
 
-<ul style="list-style-type:none">
-    @foreach (var item in Model)
+@foreach (var item in Model)
+{
+    if (item.senderID == (int)Session["userid"])
     {
-        <li style="margin-bottom:30px">
-            <span style="font-weight:bold;margin-right:15px;display:flex;!important">@item.senderName</span>
-            @{
-        if (item.senderID == (int)Session["userid"])
-        {
-            <div style="background:#7dedff; padding: 10px; color: black;word-wrap:break-word;max-width:170px;">@item.content</div>
-        }
-        else
-        {
-            <div style="background:#e4e4e4; padding: 10px; color: black;word-wrap:break-word;max-width:170px;">@item.content</div>
-        }
-            }
+        <li class="left clearfix">
+            <span class="chat-img pull-left">
+                <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
+            </span>
+            <div class="chat-body clearfix">
+                <div class="header">
+                    <strong class="primary-font">@item.senderName</strong>
+                    <small class="pull-right text-muted">
+                        <i class="fa fa-clock-o fa-fw"></i> just now
+                    </small>
+                </div>
+                <p>
+                    @item.content
+                </p>
+            </div>
         </li>
     }
-</ul>
+    else
+    {
+        <li class="right clearfix">
+            <span class="chat-img pull-right">
+                <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
+            </span>
+            <div class="chat-body clearfix">
+                <div class="header">
+                    <small class=" text-muted">
+                        <i class="fa fa-clock-o fa-fw"></i> just now
+                    </small>
+                    <strong class="pull-right primary-font">@item.senderName</strong>
+                </div>
+                <p>
+                    @item.content
+                </p>
+            </div>
+        </li>
+    }
+}
+
+
+
+    
+    

@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="@Url.Action("TeacherDashboard", "DashBoard", new { teacherIDPara = (int)Session["userid"]})">eSupervision</a>
             </div>
             <!-- /.navbar-header -->
             <ul class="nav navbar-top-links navbar-right">
@@ -71,19 +71,19 @@
                                 </li>
                             </ul>
                         <li>
-                            <a href="#"><i class="fa fa-comments fa-fw"></i> Blog<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-comments fa-fw"></i> Post<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    @Html.ActionLink("Write new blog", "Create", "Post")
+                                    @Html.ActionLink("Write new post", "Create", "Post")
                                 </li>
                                 <li>
                                     @Html.ActionLink("Upload new file", "PostFile", "Post")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("View blogs", "TeacherViewBlog", "Post")
+                                    @Html.ActionLink("View posts", "TeacherViewBlog", "Post")
                                 </li>
                                 <li>
-                                    @Html.ActionLink("My blog", "MyBlog", "Post")
+                                    @Html.ActionLink("My posts", "MyBlog", "Post")
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->

@@ -86,7 +86,7 @@ namespace eSupervisor_Beta.Controllers
                         mdd = new DetailDashboard(item.numberOfMess, date);
                         retList.Add(mdd);
                     }
-                    ViewBag.TypeDetail = "Messages Detail";
+                    ViewBag.TypeDetail = "Number of Messages per day";
                     return PartialView("_DetailDashboard", retList);
                 }
                 else
@@ -123,7 +123,7 @@ namespace eSupervisor_Beta.Controllers
                         mdd = new DetailDashboard(item.number, date);
                         retList.Add(mdd);
                     }
-                    ViewBag.TypeDetail = "Comments Detail";
+                    ViewBag.TypeDetail = "Number of Comments per day";
                     return PartialView("_DetailDashboard", retList);
                 }
                 else
@@ -160,7 +160,7 @@ namespace eSupervisor_Beta.Controllers
                         mdd = new DetailDashboard(item.number, date);
                         retList.Add(mdd);
                     }
-                    ViewBag.TypeDetail = "Posts Detail";
+                    ViewBag.TypeDetail = "Number of Posts per day";
                     return PartialView("_DetailDashboard", retList);
                 }
                 else

@@ -22,13 +22,21 @@ namespace eSupervisor_Beta.Controllers
                 if (authorization.allowAccess(3, (int)Session["userid"]))
                 {
                     user student = db.users.Find((int)Session["userid"]);
+                    SupervisorAndSecondMarkerID supvisorAndSecondMarkerID;
                     var querryAllocation = from alc in db.allocations
                                            where alc.studentID == student.id
                                            select alc;
+                    try { 
                     allocation allo = querryAllocation.ToList().ElementAt(0);
-                    SupervisorAndSecondMarkerID supvisorAndSecondMarkerID = new SupervisorAndSecondMarkerID((int)allo.supervisorID, (int)allo.secondmarkerID,
+                    supvisorAndSecondMarkerID = new SupervisorAndSecondMarkerID((int)allo.supervisorID, (int)allo.secondmarkerID,
                                                                                                              allo.user1.firstName + allo.user1.lastName,
                                                                                                              allo.user2.firstName + allo.user2.lastName);
+                    }
+                    catch
+                    {
+                        ViewBag.Error = "You have no supervisor or second marker!";
+                        return View();
+                    }
                     return View(supvisorAndSecondMarkerID);
                 }
                 else

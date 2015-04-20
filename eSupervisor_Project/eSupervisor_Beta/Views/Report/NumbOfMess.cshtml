@@ -6,7 +6,7 @@
 
 <h2>Report: Number of Messages of Students in last 7 days</h2>
 <div class="table-responsive">
-    <div style="width:500px">
+
         <table class="table table-striped table-bordered table-hover" id="dataTables">
             <thead>
                 <tr>
@@ -24,7 +24,7 @@
                                 <strong>@Html.DisplayFor(modelItem => item.user.firstName) @Html.DisplayFor(modelItem => item.user.lastName)</strong>
                                 <span class="pull-right text-muted">@Html.DisplayFor(modelItem => item.numbOfMess) Messages</span>
                                 <div class="progress progress-striped active">
-                                    <div class="sta-bar"></div>
+                                    <div class="sta-bar" style="width:0;transition:all 0.5s"></div>
                                 </div>
                             </td>
                         </tr>
@@ -32,37 +32,38 @@
                 }
             </tbody>
         </table>
-    </div>
 </div>
     <h2>Report: Number of Messages of Supervisors in last 7 days</h2>
-    <table>
-        <tr>
-            <td>Supervisor ID</td>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td>Number of messages in last 7</td>
-        </tr>
-        @foreach (var item in Model)
-        {
-            if (item.user.roleID == 2)
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover" id="dataTables2">
+        <thead>
+            <tr>
+                <td>Sort</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.user.id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.user.firstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.user.lastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.numbOfMess)
-                    </td>
-                </tr>
+                if (item.user.roleID == 2)
+                {
+                    <tr class="rowid">
+                        <td class="numValue">
+                            <span style="display: none">@Html.DisplayFor(modelItem => item.numbOfMess)</span>
+                            <strong>@Html.DisplayFor(modelItem => item.user.firstName) @Html.DisplayFor(modelItem => item.user.lastName)</strong>
+                            <span class="pull-right text-muted">@Html.DisplayFor(modelItem => item.numbOfMess) Messages</span>
+                            <div class="progress progress-striped active">
+                                <div class="sta-bar" style="width:0;transition:all 0.5s"></div>
+                            </div>
+                        </td>
+                    </tr>
+                }
             }
-        }
+        </tbody>
     </table>
+</div>
+
+
 
     @section Scripts{
         <script>
@@ -76,7 +77,7 @@
                 });
                 $(".rowid").find(".numValue").each(function () {
                     var test = parseInt($(this).text());
-                    $(this).find(".sta-bar").css('width', test / max * 500);
+                    $(this).find(".sta-bar").css('width', test / max * 100 + "%");
                     if (test <= max / 3)
                         $(this).find(".sta-bar").addClass('progress-bar progress-bar-warning');//smallest
                     else if (test >= max / 3 && test <= max / 2)
@@ -93,7 +94,12 @@
 
             $(document).ready(function () {
                 $('#dataTables').DataTable({
-                    responsive: true
+                    responsive: true,
+                    "order": [[0, "desc"]]
+                });
+                $('#dataTables2').DataTable({
+                    responsive: true,
+                    "order": [[0, "desc"]]
                 });
             });
         </script>
